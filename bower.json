@@ -1,7 +1,7 @@
 {
     "name": "CookieMock",
     "version": "0.0.3",
-    "keywords": ["cookie", "cookies", "cookie mock", "cookies.mock", "document.cookie"]
+    "keywords": ["cookie", "cookies", "cookie mock", "cookies.mock", "document.cookie"],
     "ignore": [
         "**/.*",
         "node_modules",
