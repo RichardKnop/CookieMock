@@ -1,0 +1,11 @@
+{
+    "name": "CookieMock",
+    "version": "0.0.1",
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-cli": "~0.1.9",
+        "bower": "~1.2.6",
+        "phantomjs": "~1.9.0-1",
+        "grunt-contrib-qunit": "~0.3.0"
+    }
+}
