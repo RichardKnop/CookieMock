@@ -8,9 +8,17 @@ Useful for unit tests running on Jenkins via PhantomJS.
 How to Use It
 -------------
 
+Install with Bower:
+
+```
+bower install CookieMock
+```
+
 You need a single file CookieMock.js. Include it with a script tag.
 
-<script src="CookieMock.js"></script>
+```
+<script src="bower_components/CookieMock/src/CookieMock.js"></script>
+```
 
 Then you can do use it the same way you would use document.cookie:
 
