@@ -44,3 +44,30 @@ This can be very useful when you have objects which are saving data to cookies.
 In your unit tests you can pass the CookieMock object via dependency injection as an adapter.
 
 You can then use the mock the same way you would use document.cookie.
+
+For Contributors
+----------------
+
+If you want to contribute, just clone the repository:
+
+```
+git clone https://github.com/RichardKnop/CookieMock.git
+```
+
+Create a new branch, do your changes and then make a pull request.
+
+Make sure you write unit tests for any changes and make sure your changes don't break existing tests.
+
+To run unit tests you need to install dependencies:
+
+```
+npm install
+bower install
+```
+
+You can then run the tests in command line:
+
+```
+grunt test
+```
+
