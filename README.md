@@ -70,4 +70,3 @@ You can then run the tests in command line:
 ```
 grunt test
 ```
-
