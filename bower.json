@@ -1,6 +1,6 @@
 {
     "name": "CookieMock",
-    "version": "0.0.3",
+    "version": "0.0.5",
     "keywords": ["cookie", "cookies", "cookie mock", "cookies.mock", "document.cookie"],
     "ignore": [
         "**/.*",
