@@ -2,7 +2,14 @@
 
 var CookieMock = function () {
 
-    var value = ""; // storing cookies here
+    var value = "", // storing cookies here
+        reservedKeys = [
+            "expires",
+            "path",
+            "domain",
+            "secure"
+        ],
+        cookieKeys = [];
 
     /**
      * @param {string} key
@@ -10,7 +17,6 @@ var CookieMock = function () {
      */
     function getCookieStringByKey(key) {
         var parts = value.split(";"), i, part,
-            reservedKeys = ["expires", "path", "domain"],
             cookieString = "";
 
         for (i = 0; i < parts.length; i += 1) {
@@ -52,25 +58,57 @@ var CookieMock = function () {
     }
 
     /**
-     * @param {string} cookieString
+     * @param {string} key
      * @returns {boolean} True if the cookies expire date is in the past, otherwise false
      */
-    function shouldExpireCookie(cookieString) {
-        var params = cookieString.split(";"), i, param,
+    function shouldExpireCookie(key) {
+        var cookieObject = getCookieObjectByKey(key),
             now = new Date();
-        for (i = 0; i < params.length; i += 1) {
-            param = params[i].trim();
-            if (-1 !== param.indexOf("expires=") && new Date(param.split("=")[1]) < now) {
-                return true;
-            }
+        if (cookieObject && cookieObject.expires && new Date(cookieObject.expires) < now) {
+            return true;
         }
         return false;
+    }
+
+    /**
+     * @param {string} key
+     * @returns {void}
+     */
+    function replaceCookie(key, newCookieString) {
+        if (cookieKeys.indexOf(key) === cookieKeys.length - 1) {
+            value = value.replace(getCookieStringByKey(key), newCookieString);
+        } else {
+            value = value.replace(getCookieStringByKey(key) , newCookieString + ";");
+        }
+    }
+
+    /**
+     * @param {string} key
+     * @returns {void}
+     */
+    function expireCookie(key) {
+        value = value.replace(getCookieStringByKey(key), "");
+        delete cookieKeys[cookieKeys.indexOf(key)];
+    }
+
+    /**
+     * @returns {void}
+     */
+    function expireCookies() {
+        var i, cookieKey;
+        for (i = 0; i < cookieKeys.length; i += 1) {
+            cookieKey = cookieKeys[i];
+            if (shouldExpireCookie(cookieKey)) {
+                expireCookie(cookieKey);
+            }
+        }
     }
 
     /**
      * Getter, this.cookie will return value
      */
     this.__defineGetter__("cookie", function () {
+        expireCookies();
         return value;
     });
 
@@ -82,18 +120,14 @@ var CookieMock = function () {
     this.__defineSetter__("cookie", function (newCookieString) {
         var params = newCookieString.split(";"),
             newCookieKey = params[0].trim().split("=").shift();
-        if (getCookieObjectByKey(newCookieKey)) {
-            if (shouldExpireCookie(newCookieString)) {
-                // Let's expire the cookie
-                value = value.replace(getCookieStringByKey(newCookieKey), "");
-            } else {
-                // Cookie already exists, let's replace it
-                value = value.replace(getCookieStringByKey(newCookieKey), newCookieString);
-            }
+        if (-1 !== cookieKeys.indexOf(newCookieKey)) {
+            // Cookie already exists, let's replace it
+            replaceCookie(newCookieKey, newCookieString);
             return value;
         }
         // It's a new cookie, yay
         value += (value ? ";" : "") + newCookieString;
+        cookieKeys.push(newCookieKey);
         return value;
     });
 

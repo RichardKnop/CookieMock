@@ -6,6 +6,7 @@
         "grunt-cli": "~0.1.9",
         "bower": "~1.2.6",
         "phantomjs": "~1.9.0-1",
-        "grunt-contrib-qunit": "~0.3.0"
+        "grunt-contrib-qunit": "~0.3.0",
+        "grunt-contrib-connect": "~0.5.0"
     }
 }

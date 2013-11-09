@@ -70,3 +70,11 @@ You can then run the tests in command line:
 ```
 grunt test
 ```
+
+You can also run unit tests in a browser for easier debugging:
+
+```
+grunt connect
+```
+
+A test server will run on 127.0.0.1:9001, so go to http://127.0.0.1:9001/test.html to run unit tests in your browser.

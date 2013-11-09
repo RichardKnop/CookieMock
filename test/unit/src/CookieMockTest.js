@@ -53,3 +53,44 @@ test("Test expiring a cookie", function() {
     mock.cookie = foo;
     strictEqual(mock.cookie, "");
 });
+
+test("Test expiring a single cookie when multiple cookies exist", function() {
+    var mock = new CookieMock(),
+        expires = new Date(),
+        foo, hello;
+
+    strictEqual(mock.cookie, "");
+
+    expires.setTime(expires.getTime() + 60000);
+    foo = generateFooCookie(expires);
+    mock.cookie = foo;
+    strictEqual(mock.cookie, foo);
+
+    hello = "hello=world; expires=" + expires.toUTCString() + "; path=/; domain=127.0.0.1";
+    mock.cookie = hello;
+    strictEqual(mock.cookie, foo + ";" + hello);
+
+    // 120k miliseconds = 120s = before we added 60s, so now it will be 60s in the past
+    expires.setTime(expires.getTime() - 120000);
+    foo = generateFooCookie(expires);
+    mock.cookie = foo;
+    strictEqual(mock.cookie, hello);
+});
+
+asyncTest("Test getter expires cookies and returns only valid cookies", 3, function() {
+    var mock = new CookieMock(),
+        expires = new Date(),
+        foo;
+
+    strictEqual(mock.cookie, "");
+
+    expires.setTime(expires.getTime() + 1000);
+    foo = generateFooCookie(expires);
+    mock.cookie = foo;
+    strictEqual(mock.cookie, foo);
+
+    setTimeout(function () {
+        strictEqual(mock.cookie, "");
+        start();
+    }, 2000);
+});
